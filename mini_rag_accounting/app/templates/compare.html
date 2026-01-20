@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniRAG vs Traditional RAG</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --minirag-accent: #34C759;
+            --tradrag-accent: #007AFF;
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --border-color: #e5e5e5;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: var(--text-primary);
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 2rem;
+            padding-bottom: 120px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .app-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .app-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .compare-container {
+            display: flex;
+            flex: 1;
+            gap: 1.5rem;
+        }
+
+        .response-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .panel-title.minirag { color: var(--minirag-accent); }
+        .panel-title.tradrag { color: var(--tradrag-accent); }
+
+        .panel-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .resource-info {
+            padding: 0.75rem 1.25rem;
+            background: #fafafa;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .resource-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .resource-label { color: var(--text-secondary); }
+        .resource-value { font-weight: 500; }
+        .resource-value.minirag { color: var(--minirag-accent); }
+        .resource-value.tradrag { color: var(--tradrag-accent); }
+
+        .response-body {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            min-height: 30vh;
+            max-height: 45vh;
+        }
+
+        .response-body.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .perf-metrics {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--border-color);
+            background: #fafafa;
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.8rem;
+        }
+
+        .perf-item { display: flex; gap: 0.4rem; }
+        .perf-label { color: var(--text-secondary); }
+        .perf-value { font-weight: 600; }
+        .perf-value.fast { color: var(--minirag-accent); }
+        .perf-value.slow { color: #FF9F0A; }
+
+        .explainability {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+        }
+
+        .explain-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .explain-label { color: var(--text-secondary); }
+        .explain-confidence { font-weight: 600; }
+        .explain-confidence.good { color: var(--minirag-accent); }
+        .explain-confidence.warning { color: #FF9F0A; }
+
+        .explain-path {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #f0f0f0;
+            border-radius: 6px;
+        }
+
+        .input-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 2rem;
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: #ffffff;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--tradrag-accent);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .submit-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            background: var(--tradrag-accent);
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover { background: #0066d6; }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        .loading-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .compare-container { flex-direction: column; }
+            .resource-info { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 class="app-title">MiniRAG vs Traditional RAG</h1>
+            <p class="app-subtitle">So sánh hiệu năng tra cứu tài khoản theo Thông tư 99/2025</p>
+        </header>
+
+        <div class="compare-container">
+            <!-- MiniRAG Panel -->
+            <div class="response-panel">
+                <div class="panel-header">
+                    <div class="panel-title minirag">MiniRAG</div>
+                    <div class="panel-subtitle">Direct Lookup</div>
+                </div>
+                <div class="resource-info">
+                    <div class="resource-item">
+                        <span class="resource-label">Index Type:</span>
+                        <span class="resource-value minirag">JSON Hashmap</span>
+                    </div>
+                    <div class="resource-item">
+                        <span class="resource-label">Index Size:</span>
+                        <span class="resource-value minirag" id="miniIndexSize">--</span>
+                    </div>
+                    <div class="resource-item">
+                        <span class="resource-label">Embedding Model:</span>
+                        <span class="resource-value minirag">Không cần</span>
+                    </div>
+                    <div class="resource-item">
+                        <span class="resource-label">Model Size:</span>
+                        <span class="resource-value minirag">0 MB</span>
+                    </div>
+                </div>
+                <div class="response-body empty" id="miniragResponse">Nhập câu hỏi để bắt đầu</div>
+                <div class="perf-metrics">
+                    <div class="perf-item">
+                        <span class="perf-label">Retrieval:</span>
+                        <span class="perf-value" id="miniragRetrievalTime">--</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">Generation:</span>
+                        <span class="perf-value" id="miniragGenerationTime">--</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">Total:</span>
+                        <span class="perf-value" id="miniragTotalTime">--</span>
+                    </div>
+                </div>
+                <div class="explainability" id="miniragExplain" style="display: none;">
+                    <div class="explain-row">
+                        <span class="explain-label">Confidence:</span>
+                        <span class="explain-confidence good" id="miniragConfidence">--</span>
+                    </div>
+                    <div class="explain-path" id="miniragPath">--</div>
+                </div>
+            </div>
+
+            <!-- Traditional RAG Panel -->
+            <div class="response-panel tradrag">
+                <div class="panel-header">
+                    <div class="panel-title tradrag">Traditional RAG</div>
+                    <div class="panel-subtitle">Embedding Search</div>
+                </div>
+                <div class="resource-info">
+                    <div class="resource-item">
+                        <span class="resource-label">Index Type:</span>
+                        <span class="resource-value tradrag">Vector Embeddings</span>
+                    </div>
+                    <div class="resource-item">
+                        <span class="resource-label">Index Size:</span>
+                        <span class="resource-value tradrag" id="tradIndexSize">--</span>
+                    </div>
+                    <div class="resource-item">
+                        <span class="resource-label">Embedding Model:</span>
+                        <span class="resource-value tradrag" id="tradEmbedModel">--</span>
+                    </div>
+                    <div class="resource-item">
+                        <span class="resource-label">Model Size:</span>
+                        <span class="resource-value tradrag" id="tradModelSize">--</span>
+                    </div>
+                </div>
+                <div class="response-body empty" id="tradragResponse">Nhập câu hỏi để bắt đầu</div>
+                <div class="perf-metrics">
+                    <div class="perf-item">
+                        <span class="perf-label">Retrieval:</span>
+                        <span class="perf-value" id="tradragRetrievalTime">--</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">Generation:</span>
+                        <span class="perf-value" id="tradragGenerationTime">--</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">Total:</span>
+                        <span class="perf-value" id="tradragTotalTime">--</span>
+                    </div>
+                </div>
+                <div class="explainability" id="tradragExplain" style="display: none;">
+                    <div class="explain-row">
+                        <span class="explain-label">Confidence:</span>
+                        <span class="explain-confidence warning" id="tradragConfidence">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-section">
+        <div class="input-wrapper">
+            <input type="text" class="input-field" id="questionInput"
+                   placeholder="Nhập câu hỏi, ví dụ: Tài khoản 156 là gì?"
+                   onkeypress="handleKeyPress(event)">
+            <button class="submit-btn" id="submitBtn" onclick="runComparison()">So sánh</button>
+        </div>
+    </div>
+
+    <script>
+        const MINIRAG_API = '/api/ai-uit/accounting/ask';
+        const TRADRAG_API = '/api/ai-uit/accounting/ask-traditional';
+        const RESOURCE_API = '/api/ai-uit/accounting/resource-info';
+
+        let resourceInfo = null;
+
+        async function loadResourceInfo() {
+            try {
+                const response = await fetch(RESOURCE_API);
+                resourceInfo = await response.json();
+                displayResourceInfo();
+            } catch (e) {
+                console.error('Failed to load resource info:', e);
+            }
+        }
+
+        function displayResourceInfo() {
+            if (!resourceInfo) return;
+            const mini = resourceInfo.minirag;
+            const trad = resourceInfo.traditional;
+
+            document.getElementById('miniIndexSize').textContent = `${mini.index_size_kb.toFixed(1)} KB`;
+            document.getElementById('tradIndexSize').textContent = `${trad.index_size_kb.toFixed(1)} KB`;
+            document.getElementById('tradEmbedModel').textContent = trad.embedding_model.split('/').pop();
+            const modelSize = typeof trad.embedding_model_size_mb === 'number'
+                ? `${trad.embedding_model_size_mb.toFixed(0)} MB` : trad.embedding_model_size_mb;
+            document.getElementById('tradModelSize').textContent = modelSize;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') runComparison();
+        }
+
+        function cleanMarkers(text) {
+            // Remove __RETRIEVAL__:{...} including nested braces
+            let result = text;
+            const markers = ['__RETRIEVAL__:', '__GENERATION__:'];
+
+            for (const marker of markers) {
+                const idx = result.indexOf(marker);
+                if (idx !== -1) {
+                    const jsonStart = idx + marker.length;
+                    if (result[jsonStart] === '{') {
+                        let braceCount = 0;
+                        let jsonEnd = jsonStart;
+                        for (let i = jsonStart; i < result.length; i++) {
+                            if (result[i] === '{') braceCount++;
+                            else if (result[i] === '}') {
+                                braceCount--;
+                                if (braceCount === 0) {
+                                    jsonEnd = i + 1;
+                                    break;
+                                }
+                            }
+                        }
+                        result = result.substring(0, idx) + result.substring(jsonEnd);
+                    }
+                }
+            }
+
+            return result.trim();
+        }
+
+        function parseMarker(text, markerName) {
+            const regex = new RegExp(`__${markerName}__:(.+?)(?=__|$)`, 's');
+            const match = text.match(regex);
+            if (!match) return null;
+
+            const jsonStr = match[1].trim();
+            if (jsonStr.startsWith('{')) {
+                let braceCount = 0, end = 0;
+                for (let i = 0; i < jsonStr.length; i++) {
+                    if (jsonStr[i] === '{') braceCount++;
+                    else if (jsonStr[i] === '}') {
+                        braceCount--;
+                        if (braceCount === 0) { end = i + 1; break; }
+                    }
+                }
+                try {
+                    return JSON.parse(jsonStr.substring(0, end));
+                } catch (e) { return null; }
+            }
+            return jsonStr;
+        }
+
+        async function fetchWithMetrics(url, question, prefix) {
+            const response = await fetch(`${url}?question=${encodeURIComponent(question)}`);
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+
+            let fullResponse = '';
+            const responseEl = document.getElementById(`${prefix}Response`);
+            responseEl.classList.remove('empty');
+            responseEl.textContent = '';
+
+            let retrievalInfo = null;
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value);
+                fullResponse += chunk;
+
+                // Parse retrieval info
+                if (!retrievalInfo) {
+                    retrievalInfo = parseMarker(fullResponse, 'RETRIEVAL');
+                    if (retrievalInfo && typeof retrievalInfo === 'object') {
+                        const timeStr = retrievalInfo.time_ms < 1
+                            ? `${retrievalInfo.time_ms.toFixed(3)} ms`
+                            : `${(retrievalInfo.time_ms/1000).toFixed(3)} s`;
+                        const timeEl = document.getElementById(`${prefix}RetrievalTime`);
+                        timeEl.textContent = timeStr;
+                        timeEl.classList.add(retrievalInfo.time_ms < 10 ? 'fast' : 'slow');
+
+                        document.getElementById(`${prefix}Explain`).style.display = 'block';
+                        document.getElementById(`${prefix}Confidence`).textContent = retrievalInfo.confidence || '--';
+
+                        if (prefix === 'minirag' && retrievalInfo.path) {
+                            document.getElementById('miniragPath').textContent = retrievalInfo.path;
+                        }
+                    }
+                }
+
+                responseEl.textContent = cleanMarkers(fullResponse);
+                responseEl.scrollTop = responseEl.scrollHeight;
+            }
+
+            responseEl.textContent = cleanMarkers(fullResponse);
+
+            const genInfo = parseMarker(fullResponse, 'GENERATION');
+            if (genInfo && typeof genInfo === 'object') {
+                document.getElementById(`${prefix}GenerationTime`).textContent = `${(genInfo.time_ms/1000).toFixed(2)} s`;
+            }
+
+            return { retrievalTime: retrievalInfo?.time_ms || 0 };
+        }
+
+        async function runComparison() {
+            const question = document.getElementById('questionInput').value.trim();
+            if (!question) {
+                document.getElementById('questionInput').focus();
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Đang xử lý...';
+
+            // Reset UI
+            ['minirag', 'tradrag'].forEach(prefix => {
+                document.getElementById(`${prefix}Response`).innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+                document.getElementById(`${prefix}Response`).classList.remove('empty');
+                document.getElementById(`${prefix}Explain`).style.display = 'none';
+                ['RetrievalTime', 'GenerationTime', 'TotalTime'].forEach(m => {
+                    const el = document.getElementById(`${prefix}${m}`);
+                    el.textContent = '--';
+                    el.classList.remove('fast', 'slow');
+                });
+            });
+
+            try {
+                await Promise.all([
+                    fetchWithMetrics(MINIRAG_API, question, 'minirag'),
+                    fetchWithMetrics(TRADRAG_API, question, 'tradrag').catch(() => ({}))
+                ]);
+            } catch (error) {
+                console.error('Comparison error:', error);
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'So sánh';
+        }
+
+        document.getElementById('questionInput').focus();
+        loadResourceInfo();
+    </script>
+</body>
+</html>
