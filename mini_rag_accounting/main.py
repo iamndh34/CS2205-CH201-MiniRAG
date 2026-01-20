@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
     db.client.close()
     print("Disconnected MongoDB")
 
-app = FastAPI(title="BFLOW AI", lifespan=lifespan)
+app = FastAPI(title="UIT MiniRAG Accounting", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,8 +27,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router, prefix="/api/ai-bflow")
+app.include_router(router, prefix="/api/ai-uit")
 
 @app.get("/")
 async def root():
-    return {"message": "BFLOW AI is running"}
+    return {"message": "UIT MiniRAG Accounting is running"}
