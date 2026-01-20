@@ -1,0 +1,44 @@
+services:
+  # 1. App chính của bạn
+  mis_ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mis_ai
+    ports:
+      - "8010:8010"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+      - ollama  # <--- Đợi cả Ollama chạy xong mới chạy app
+    restart: unless-stopped
+    environment:
+      - MONGO_URL=mongodb://mis_mongo:27017/bflow_db
+      - OLLAMA_HOST=http://mis_ollama:11434  # <--- Dòng này giúp code Python tự biết đường tìm AI
+      - PYTHONUNBUFFERED=1
+
+  # 2. Database (Đã có)
+  mongo:
+    image: mongo:6.0
+    container_name: mis_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  # 3. AI Server (THÊM MỚI ĐOẠN NÀY)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: mis_ollama
+    restart: always
+    ports:
+      - "11434:11434" # Mở port này để bạn có thể test từ máy ngoài nếu cần
+    volumes:
+      - ollama_data:/root/.ollama # Quan trọng: Lưu model lại để không phải tải lại mỗi lần restart
+
+# Khai báo Volumes
+volumes:
+  mongodb_data:
+  ollama_data: # <--- Thêm dòng này

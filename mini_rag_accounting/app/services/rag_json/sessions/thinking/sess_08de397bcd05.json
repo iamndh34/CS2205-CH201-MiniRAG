@@ -1,0 +1,15 @@
+{
+  "id": "sess_08de397bcd05",
+  "chat_type": "thinking",
+  "created_at": "2026-01-07 19:48:25",
+  "updated_at": "2026-01-07 19:49:47",
+  "title": "So sánh tài khoản 112",
+  "history": [
+    {
+      "time": "2026-01-07 19:49:47",
+      "question": "So sánh tài khoản 112",
+      "response": "1. THÔNG TIN CƠ BẢN:\n- Số hiệu: 156  \n- Tên tài khoản: Tiền gửi không kỳ hạn (Cash in bank)  \n- Loại tài khoản: Tài sản\n\n2. NỘI DUNG PHẢN ÁNH:\n- Tài khoản này dùng để phản ánh trị giá hiện có và tình hình biến động tăng, giảm của tiền gửi không kỳ hạn trong ngân hàng. \n\n3. KẾT CẤU VÀ NỘI DАНH:\n- Bên Nợ: \n  + Trị giá tiền gửi theo thời gian.\n  \n- Bên Có:\n  + Số tiền được nhận từ việc gửi tiền vào ngân hàng.\n  \n- Số dư bên Nợ: Tổng số tiền đã gửi và chưa rút ra trong tài khoản này.\n\n(Căn cứ: Phụ lục II - Thông tư 99/2025/TT-BTC)",
+      "category": "COA"
+    }
+  ]
+}

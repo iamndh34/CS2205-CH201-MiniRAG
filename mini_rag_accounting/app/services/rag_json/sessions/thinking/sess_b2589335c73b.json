@@ -1,0 +1,21 @@
+{
+  "id": "sess_b2589335c73b",
+  "chat_type": "thinking",
+  "created_at": "2026-01-19 10:38:08",
+  "updated_at": "2026-01-19 10:40:41",
+  "title": "Hạch toán Phiếu chi?",
+  "history": [
+    {
+      "time": "2026-01-19 10:38:45",
+      "question": "Hạch toán Phiếu chi?",
+      "response": "Phiếu chi được ghi chép trong sổ sách kế toán với mục đích để lưu hồ sơ và cho phép kiểm tra về những khoản tiền đã tiêu dùng trong quá trình hoạt động kinh doanh của bạn. \n\nQuá trình hạch toán phiếu chi bao gồm:\n\n1. Soạn thành từng giao dịch cụ thể (như một loại hàng hóa, dịch vụ hoặc chi phí khác) \n2. Ghi số tiền vào sổ sách kế toán\n3. Chia sẻ số tiền đã được thanh toán với số tiền còn lại trong giao dịch đó\n4. Lưu lại các phiếu thu và chi có liên quan\n\nHạch toán phiếu chi giúp bạn dễ dàng kiểm tra, tổng hợp và theo dõi toàn bộ hoạt động kinh doanh của mình, cũng như đảm bảo rằng mọi khoản phí đã được tuân thủ đúng quy định pháp lý.",
+      "category": "GENERAL_FREE"
+    },
+    {
+      "time": "2026-01-19 10:40:41",
+      "question": "Hạch toán Phiếu chi?",
+      "response": "1. TÊN NGHIỆP VỤ:\nPhiếu chi tiền\n\n2. BẢNG BÚT TOÁN:\n- Nợ TK 331: Phải trả cho người bán (*)\n- Có TK 111: Tiền mặt (*)\n- Có TK 112: Tiền gửi không kỳ hạn (*)\n\n3. GIẢI THÍCH:\n- Nợ TK 331: Giảm công nợ phải trả cho nhà cung cấp\n- Có TK 111: Ghi nhận tiền mặt chi ra\n- Có TK 112: Ghi nhận tiền chuyển khoản chi ra\n\n4. VÍ DỤ:\nThanh toán công nợ 100 triệu cho NCC: 10 triệu tiền mặt + 90 triệu chuyển khoản:\n- Nợ TK 331: 100.000.000đ\n- Có TK 111: 10.000.000đ\n- Có TK 112: 90.000.000đ\n\nGhi chú: Các dòng có dấu (*) là các dòng được cấu hình `account_source_type` = `LOOKUP`. Hệ thống sẽ dựa vào nhóm sản phẩm `(Item Group)` hoặc nhóm đối tác `(Partner Group)` để xác định tài khoản cụ thể (Ví dụ: `Hàng hóa` dùng `156`, `Thành phẩm` dùng `155`).",
+      "category": "POSTING_ENGINE"
+    }
+  ]
+}

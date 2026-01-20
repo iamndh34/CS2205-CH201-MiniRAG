@@ -1,0 +1,15 @@
+{
+  "id": "sess_dea8d93ecf05",
+  "chat_type": "thinking",
+  "created_at": "2026-01-19 12:31:57",
+  "updated_at": "2026-01-19 12:33:04",
+  "title": "Cách hạch toán cho Hóa đơn phải chi?",
+  "history": [
+    {
+      "time": "2026-01-19 12:33:04",
+      "question": "Cách hạch toán cho Hóa đơn phải chi?",
+      "response": "1. THÔNG TIN CƠ BẢN:\n- Số hiệu: 456\n- Tên tài khoản: Hóa đơn phải chi (Payment voucher)\n- Loại tài khoản: Chứng từ (Loại 2)\n\n2. NỘI DCONTENT PHẢN ÁNH:\n- Tài khoản này dùng để phản ánh các giao dịch mua hàng hóa và dịch vụ mà doanh nghiệp đã lập thành hóa đơn nhưng chưa được nhà cung cấp chấp nhận hoặc chưa thanh toán.\n\n3. KẾT CẤU VÀ NỘI DUNG:\n- Bên Nợ:\n  + Trị giá của hàng hóa, dịch vụ cần phải chi (được ghi trên hóa đơn).\n  + Chi phí liên quan đến việc mua hàng như tiền vận chuyển.\n  + Các khoản thuế GTGT phải trả khi mua hàng. (Điều này có thể được ghi vào tài khoản 33311: Thuế GTGT đầu ra)\n- Bên Có:\n  + Không có bên có trong trường hợp này, vì đây là chứng từ đã lập nhưng chưa thực hiện giao dịch.\n- Số dư bên Nợ: Trong trường hợp này sẽ không có số dư bởi các hóa đơn phải chi được trừ khỏi các hóa đơn đang được chấp nhận hoặc ghi vào tài khoản 33311 sau đó.\n\n(Căn cứ: Phụ lục II - Thông tư 99/2025/TT-BTC)",
+      "category": "COA"
+    }
+  ]
+}

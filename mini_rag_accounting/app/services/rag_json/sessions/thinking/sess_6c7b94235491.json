@@ -1,0 +1,15 @@
+{
+  "id": "sess_6c7b94235491",
+  "chat_type": "thinking",
+  "created_at": "2026-01-19 12:30:10",
+  "updated_at": "2026-01-19 12:31:24",
+  "title": "Cách hạch toán cho Hóa đơn phải chi?",
+  "history": [
+    {
+      "time": "2026-01-19 12:31:24",
+      "question": "Cách hạch toán cho Hóa đơn phải chi?",
+      "response": "1. TÊN NGHIỆP VỤ:\nPhiếu chi tiền\n\n2. BẢT TOÁN:\n- Nợ TK 331: Phải trả cho người bán (*)\n- Có TK 111: Tiền mặt (*)\n- Có TK 112: Tiền gửi không kỳ hạn (*)\n\n3. GIẢI THÍCH:\n- Nợ TK 331: Giảm công nợ phải trả cho nhà cung cấp\n- Có TK 111: Ghi nhận tiền mặt chi ra\n- Có TK 112: Ghi nhận tiền chuyển khoản chi ra\n\n4. VÍ DỤ:\nThanh toán công nợ 100 triệu cho NCC: 10 triệu tiền mặt + 90 triệu chuyển khoản:\n- Nợ TK 331: 100.000.000đ\n- Có TK 111: 10.000.000đ\n- Có TK 112: 90.000.000đ\n\nGhi chú: Các dòng có dấu (*) là các dòng được cấu hình `account_source_type` = `LOOKUP`. Hệ thống sẽ dựa vào nhóm sản phẩm `(Item Group)` hoặc nhóm đối tác `(Partner Group)` để xác định tài khoản cụ thể (Ví dụ: `Hàng hóa` dùng `156`, `Thành phẩm` dùng `155`).",
+      "category": "POSTING_ENGINE"
+    }
+  ]
+}

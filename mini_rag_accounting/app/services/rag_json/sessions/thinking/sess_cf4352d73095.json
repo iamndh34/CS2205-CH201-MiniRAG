@@ -1,0 +1,15 @@
+{
+  "id": "sess_cf4352d73095",
+  "chat_type": "thinking",
+  "created_at": "2026-01-07 20:51:31",
+  "updated_at": "2026-01-07 20:52:56",
+  "title": "So sánh tài khoản 112",
+  "history": [
+    {
+      "time": "2026-01-07 20:52:56",
+      "question": "So sánh tài khoản 112",
+      "response": "SO SÁNH TÀI KHOẢN 112 - TIỀN GỬI NGÂN HÀNG\n\n| Tiêu chí         | TT200 (2014)              | TT99 (2025)                   |\n|------------------|----------------------------|--------------------------------|\n| Số hiệu          | 112                        | 112                            |\n| Tên tài khoản    | Tiền gửi ngân hàng        |Tiền gửi không kỳ hạn            |\n| Tên tiếng Anh    | Cash in bank                |Cash in bank (Demand deposits)  |\n| Loại tài khoản   | Tài sản                    |Tài sản                         |\n| TK con           | 1121, 1122, 1123            |Không có TK con                 |\n\nNHẬN XÉT:\n- TT99 đổi tên từ \"Tiền gửi ngân hàng\" thành \"Tiền gửi không kỳ hạn\" để phân biệt rõ với tiền gửi có kỳ hạn.\n- TT99 đơn giản hóa cấu trúc, không chia TK con theo loại tiền (VND, ngoại tệ, vàng).",
+      "category": "COMPARE"
+    }
+  ]
+}
